@@ -10,7 +10,7 @@ from .static_resources import IndexResource
 class WebApp:
 
     def __init__(self):
-        self._api = falcon.API(middleware=[MultipartMiddleware])
+        self._api = falcon.API(middleware=[MultipartMiddleware()])
 
         # provide static routing for all calls to webpage frontends
         self._api.add_static_route(prefix='/', directory=str(STATIC_DIR))

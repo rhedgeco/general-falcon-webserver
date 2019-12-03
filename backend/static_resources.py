@@ -12,6 +12,6 @@ def _get_template(template_name):
 
 class IndexResource:
     @staticmethod
-    def on_get(resp):
+    def on_get(req, resp):
         resp.content_type = "text/html"
-        resp.body = _get_template("../frontend/index.html")
+        resp.body = _get_template("../frontend/index.html").render()
