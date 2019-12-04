@@ -11,9 +11,7 @@ class TestClickApi:
     # gets the number of clicks for a button
     def on_get(self, req, resp):
         obj = get_clicks(self.database)
-        obj = json.dumps(obj, ensure_ascii=True)
-
-        resp.body = obj['clicks']
+        resp.body = json.dumps(obj, ensure_ascii=True)
 
     def on_put(self, req, resp):
         add_click(self.database)

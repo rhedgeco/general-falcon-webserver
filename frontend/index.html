@@ -54,6 +54,30 @@
                 </div>
             </div>
         </div>
+        <button id="click_button" onclick="click_button();" class="btn-large amber black-text waves-effect waves-light">
+            This has been clicked ~ Times!
+        </button>
+        <script>
+            let btn = document.getElementById('click_button');
+            update_button();
+
+            function update_button() {
+                // here is one way of submitting http requests
+                let req = new XMLHttpRequest();
+                req.open('GET', 'api/test_click');
+                req.onload = function () {
+                    let amount = JSON.parse(this.response)['amount'];
+                    btn.innerText = 'This has been clicked ' + amount + ' Times!';
+                };
+                req.send()
+            }
+
+            function click_button() {
+                // here is another way of submitting http requests
+                fetch('/api/test_click', {method: 'PUT'});
+                update_button();
+            }
+        </script>
     </div>
 </div>
 
