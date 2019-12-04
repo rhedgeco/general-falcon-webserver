@@ -17,7 +17,11 @@ class WebApp:
         self._api.add_route('/', IndexResource)
 
     def add_route(self, location_name: str, resource):
-        self._api.add_route(f'/api/{location_name}', resource)
+        if location_name.startswith('/'):
+            location_name = location_name[1:]
+        location_name = f'/api/{location_name}'
+        print(f'Added api location {location_name}')
+        self._api.add_route(location_name, resource)
 
     def launch_webserver(self, host: str = '0.0.0.0', port: int = 80):
         print('creating webserver...')
