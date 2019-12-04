@@ -1,9 +1,9 @@
 from jinja2 import Template
-from .paths import STATIC_DIR
+from .paths import FRONTEND_DIR
 
 
 def _get_template(template_name):
-    path = (STATIC_DIR / template_name).absolute()
+    path = (FRONTEND_DIR / template_name).absolute()
     if not path.is_file():
         raise FileNotFoundError(f'Error locating {path} on server.')
     with open(path, 'r') as f:

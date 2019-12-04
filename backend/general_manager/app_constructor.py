@@ -1,9 +1,11 @@
 import falcon
+import sqlite3
+import os
 
 from falcon_multipart.middleware import MultipartMiddleware
 from wsgiref import simple_server
 
-from .paths import STATIC_DIR
+from .paths import FRONTEND_DIR
 from .static_resources import IndexResource
 
 
@@ -13,7 +15,7 @@ class WebApp:
         self._api = falcon.API(middleware=[MultipartMiddleware()])
 
         # provide static routing for all calls to webpage frontends
-        self._api.add_static_route(prefix='/', directory=str(STATIC_DIR))
+        self._api.add_static_route(prefix='/', directory=str(FRONTEND_DIR))
         self._api.add_route('/', IndexResource)
 
     def add_route(self, location_name: str, resource):
