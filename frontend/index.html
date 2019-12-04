@@ -8,8 +8,54 @@
     <link href="data/css/material-icons.css" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="data/css/materialize.css" media="screen,projection"/>
     <script src="data/js/jquery-3.4.1.min.js"></script>
+    <script src="data/js/materialize.min.js"></script>
 </head>
 <body class="blue-grey darken-4">
+<div class="row">
+    <div class="col s12 m8 l6 offset-m2 offset-l3 center-align blue-grey-text text-lighten-3">
+        <div class="section">
+            <img src="data/images/logo.svg" alt="Falcon Logo" style="height: 150px">
+            <h1>General Falcon Webserver</h1>
+        </div>
+        <div class="divider blue-grey"></div>
+        <div class="section">
+            <div class="row">
+                <div class="row">
+                    <div class="col s12 m6">
+                        <div class="card blue-grey darken-3 hoverable waves-effect waves-orange"
+                             onclick="window.location.href = 'https://falcon.readthedocs.io/en/stable/';">
+                            <div class="card-content white-text">
+                                <span class="card-title amber-text">Falcon Web Framework</span>
+                                <p>Falcon is a minimalist WSGI library for building speedy web APIs and app backends.
+                                    We like to think of Falcon as the Dieter Rams of web frameworks.
+                                    <br><br>
+                                    When it comes to building HTTP APIs, other frameworks weigh you down with tons of
+                                    dependencies and unnecessary abstractions. Falcon cuts to the chase with a clean
+                                    design that embraces HTTP and the REST architectural style.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m6">
+                        <div class="card blue-grey darken-3 hoverable waves-effect waves-orange"
+                             onclick="window.location.href = 'https://materializecss.com/';">
+                            <div class="card-content white-text">
+                                <span class="card-title amber-text">Materialize CSS</span>
+                                <p>A modern responsive front-end framework based on Material Design
+                                    <br><br>
+                                    Created and designed by Google, Material Design is a design language that combines
+                                    the classic principles of successful design along with innovation and technology.
+                                    Google's goal is to develop a system of design that allows for a unified user
+                                    experience across all their products on any platform.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>M.AutoInit();</script>
 </body>
 </html>
