@@ -6,15 +6,18 @@ from pathlib import Path
 
 from .static_resources import IndexResource
 
-
 class WebApp:
 
-    def __init__(self, frontend_dir):
+    def __init__(self, frontend_dir: str, page_404: str = None):
         self._api = falcon.API(middleware=[MultipartMiddleware()])
 
         # provide static routing for all calls to webpage frontends
         frontend_dir = Path(frontend_dir).absolute()
-        self._api.add_static_route(prefix='/', directory=str(frontend_dir))
+        self._api.add_static_route(
+            prefix='/',
+            directory=str(frontend_dir),
+            fallback_filename=str(frontend_dir/page_404) if page_404 else None
+        )
         self._api.add_route('/', IndexResource(frontend_dir))
 
     def add_route(self, location_name: str, resource):
