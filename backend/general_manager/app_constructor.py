@@ -36,6 +36,6 @@ class WebApp:
         )
 
         # construct nice print for hosting on the default host and port
-        location = ('localhost' if host == '0.0.0.0' else host) + ('' if port == 80 else port)
+        location = ('localhost' if host == '0.0.0.0' else host) + ('' if port == 80 else f':{str(port)}')
         print(f'Launching webserver at http://{location}')
         server.serve_forever()
