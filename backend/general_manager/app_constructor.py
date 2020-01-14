@@ -2,9 +2,16 @@ import falcon
 
 from falcon_multipart.middleware import MultipartMiddleware
 from wsgiref import simple_server
+from socketserver import ThreadingMixIn
 from pathlib import Path
 
 from .static_resources import IndexResource
+
+
+class ThreadedWSGIServer(ThreadingMixIn, simple_server.WSGIServer):
+    """A WSGI server that has threading enabled."""
+    pass
+
 
 class WebApp:
 
@@ -16,7 +23,7 @@ class WebApp:
         self._api.add_static_route(
             prefix='/',
             directory=str(frontend_dir),
-            fallback_filename=str(frontend_dir/page_404) if page_404 else None
+            fallback_filename=str(frontend_dir / page_404) if page_404 else None
         )
         self._api.add_route('/', IndexResource(frontend_dir))
 
@@ -32,7 +39,8 @@ class WebApp:
         server = simple_server.make_server(
             host=host,
             port=port,
-            app=self._api
+            app=self._api,
+            server_class=ThreadedWSGIServer
         )
 
         # construct nice print for hosting on the default host and port
