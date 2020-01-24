@@ -22,8 +22,8 @@ class SqliteDatabase:
         print(f'attemting to connect to sqlite database at path {self.database_path}')
         while True:
             try:
-                self.con = sqlite3.connect(str(self.database_path))
-                self.con.row_factory = SqliteDatabaseFactory.dict_factory
+                con = sqlite3.connect(str(self.database_path))
+                con.row_factory = SqliteDatabaseFactory.dict_factory
                 print(f'connected to sqlite database {database_name}')
                 print(str(self.database_path))
                 break
@@ -35,15 +35,20 @@ class SqliteDatabase:
         if not database_config == '':
             self.configure_database(database_config)
 
+    def _get_database_connection(self):
+        con = sqlite3.connect(str(self.database_path))
+        con.row_factory = SqliteDatabaseFactory.dict_factory
+        return con
+
     def configure_database(self, database_config: str):
         print(f'configuring database...')
         for query in database_config.split(';'):
             self.send_query(query)
 
     def _execute_query(self, query):
-        with self.con:
+        with self._get_database_connection() as con:
             try:
-                cur = self.con.cursor()
+                cur = con.cursor()
                 cur.execute(query)
                 return cur
             except sqlite3.OperationalError as e:
