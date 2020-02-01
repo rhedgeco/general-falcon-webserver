@@ -17,6 +17,7 @@ class WebApp:
 
     def __init__(self, frontend_dir: str, page_404: str = None):
         self._api = falcon.API(middleware=[MultipartMiddleware()])
+        self._api.req_options.auto_parse_form_urlencoded = True
 
         # provide static routing for all calls to webpage frontends
         frontend_dir = Path(frontend_dir).absolute()
