@@ -61,17 +61,17 @@ class SqliteDatabase:
     def fetchone_query(self, query):
         q = self._execute_query(query)
         if not q:
-            raise Exception('BAD QUERY')
+            return []
         return q.fetchone()
 
     def fetchmany_query(self, query, size):
         q = self._execute_query(query)
         if not q:
-            raise Exception('BAD QUERY')
+            return []
         return q.fetchmany(size)
 
     def fetchall_query(self, query):
         q = self._execute_query(query)
         if not q:
-            raise Exception('BAD QUERY')
+            return []
         return q.fetchall()
