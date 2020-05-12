@@ -28,6 +28,9 @@ class WebApp:
         )
         self._api.add_route('/', IndexResource(frontend_dir))
 
+    def get_api_for_testing(self):
+        return self._api
+
     def add_route(self, location_name: str, resource):
         if location_name.startswith('/'):
             location_name = location_name[1:]
