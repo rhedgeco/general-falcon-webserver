@@ -1,6 +1,4 @@
 import falcon
-import sqlite3
-import os
 
 from falcon_multipart.middleware import MultipartMiddleware
 from wsgiref import simple_server
@@ -18,12 +16,12 @@ class WebApp:
         self._api.add_static_route(prefix='/', directory=str(FRONTEND_DIR))
         self._api.add_route('/', IndexResource)
 
-    def add_route(self, location_name: str, resource):
-        if location_name.startswith('/'):
-            location_name = location_name[1:]
-        location_name = f'/api/{location_name}'
-        print(f'Added api location {location_name}')
-        self._api.add_route(location_name, resource)
+    def add_route(self, uri_template, resource, **kwargs):
+        if uri_template.startswith('/'):
+            uri_template = uri_template[1:]
+        uri_template = f'/api/{uri_template}'
+        print(f'Added api location {uri_template}')
+        self._api.add_route(uri_template, resource, **kwargs)
 
     def launch_webserver(self, host: str = '0.0.0.0', port: int = 80):
         print('creating webserver...')
