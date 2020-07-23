@@ -1,8 +1,8 @@
-from .backend.general_manager.app_constructor import WebApp
-from .backend.general_manager.databases import SqliteDatabase
-from .backend.test_click_api import TestClickApi
+from backend.general_manager.app_constructor import WebApp
+from backend.general_manager.databases import SqliteDatabase
+from backend.test_click_api import TestClickApi
 
-app = WebApp('frontend')
+app = WebApp()
 database = SqliteDatabase(
     database_name='general-falcon-database',
     database_config='CREATE TABLE IF NOT EXISTS button_clicks (amount int NOT NULL);'

@@ -1,36 +1,22 @@
-import falcon
-from jinja2 import Template
+import os
 from pathlib import Path
 
-
-def get_template(path: str):
-    path = Path(path).absolute()
-    if not path.is_file():
-        raise FileNotFoundError(f'Error locating {path} on server.')
-    with open(path, 'r') as f:
-        return Template(f.read())
-
-
-class IndexResource:
-    def __init__(self, frontend_dir: str):
-        self.frontend_dir = Path(frontend_dir).absolute()
-
-    def on_get(self, req, resp):
-        resp.content_type = "text/html"
-        resp.body = get_template(self.frontend_dir / 'index.html').render()
+from jinja2 import Template
 
 
 class StaticResource:
-    def __init__(self, frontend_dir, page_404: str = None):
-        self.frontend_dir = Path(frontend_dir)
-        self.handle_404_page = (frontend_dir/page_404).absolute() if page_404 else None
+    def __init__(self, path):
+        self.path = str(path)
 
-    def on_get(self, req, resp, filename):
-        file = Path(filename).absolute()
-        if file.is_file() and self.handle_404_page:
-            resp.status = falcon.HTTP_NOT_FOUND
-            resp.body = get_template(self.handle_404_page).render()
-            return
+    def on_get(self, req, resp):
+        suffix = os.path.splitext(self.path)[1]
+        resp.content_type = resp.options.static_media_types.get(
+            suffix,
+            'application/octet-stream'
+        )
 
-        resp.status = falcon.HTTP_OK
-        resp.body = get_template(file).render()
+        path = Path(self.path).absolute()
+        if not path.is_file():
+            raise FileNotFoundError(f'Error locating {self.path} on server.')
+        with open(self.path, 'r') as f:
+            resp.body = Template(f.read()).render()

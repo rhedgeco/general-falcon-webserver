@@ -1,17 +1,17 @@
 import sqlite3
 
 from time import sleep
-from .paths import BACKEND_DIR
+from .web_paths import WebPathStructure
 
 from .database_factories import SqliteDatabaseFactory
 
 
 class SqliteDatabase:
-    def __init__(self, database_name: str, database_config: str = ''):
+    def __init__(self, database_name: str, database_config: str = '', web_path: WebPathStructure = WebPathStructure()):
         print(f'constructing sqlite database {database_name}')
 
         # Create database directory if not exists
-        self.database_dir = BACKEND_DIR / 'general_manager' / 'sqlite'
+        self.database_dir = web_path.backend_dir_absolute / 'general_manager' / 'sqlite'
         self.database_dir.mkdir(parents=True, exist_ok=True)
 
         # Create database if not exists
