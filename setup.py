@@ -1,5 +1,3 @@
-# venv is already set up in this project. Use this for setting up an extrenal environment
-
 from setuptools import setup
 
 setup(

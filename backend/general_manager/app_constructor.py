@@ -2,19 +2,34 @@ import falcon
 
 from falcon_multipart.middleware import MultipartMiddleware
 from wsgiref import simple_server
+from socketserver import ThreadingMixIn
+from pathlib import Path
 
-from .paths import FRONTEND_DIR
 from .static_resources import IndexResource
+
+
+class ThreadedWSGIServer(ThreadingMixIn, simple_server.WSGIServer):
+    """A WSGI server that has threading enabled."""
+    pass
 
 
 class WebApp:
 
-    def __init__(self):
+    def __init__(self, frontend_dir: str, page_404: str = None):
         self._api = falcon.API(middleware=[MultipartMiddleware()])
+        self._api.req_options.auto_parse_form_urlencoded = True
 
         # provide static routing for all calls to webpage frontends
-        self._api.add_static_route(prefix='/', directory=str(FRONTEND_DIR))
-        self._api.add_route('/', IndexResource)
+        frontend_dir = Path(frontend_dir).absolute()
+        self._api.add_static_route(
+            prefix='/',
+            directory=str(frontend_dir),
+            fallback_filename=str(frontend_dir / page_404) if page_404 else None
+        )
+        self._api.add_route('/', IndexResource(frontend_dir))
+
+    def get_api_for_testing(self):
+        return self._api
 
     def add_route(self, uri_template, resource, **kwargs):
         if uri_template.startswith('/'):
@@ -28,10 +43,11 @@ class WebApp:
         server = simple_server.make_server(
             host=host,
             port=port,
-            app=self._api
+            app=self._api,
+            server_class=ThreadedWSGIServer
         )
 
         # construct nice print for hosting on the default host and port
-        location = ('localhost' if host == '0.0.0.0' else host) + ('' if port == 80 else port)
+        location = ('localhost' if host == '0.0.0.0' else host) + ('' if port == 80 else f':{str(port)}')
         print(f'Launching webserver at http://{location}')
         server.serve_forever()
