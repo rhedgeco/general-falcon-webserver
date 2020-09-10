@@ -1,4 +1,5 @@
 import sqlite3
+from pathlib import Path
 
 from time import sleep
 from .web_paths import WebPathStructure
@@ -11,7 +12,7 @@ class SqliteDatabase:
         print(f'constructing sqlite database {database_name}')
 
         # Create database directory if not exists
-        self.database_dir = web_path.backend_dir_absolute / 'general_manager' / 'sqlite'
+        self.database_dir = Path(web_path.backend_dir_absolute) / 'sqlite'
         self.database_dir.mkdir(parents=True, exist_ok=True)
 
         # Create database if not exists
